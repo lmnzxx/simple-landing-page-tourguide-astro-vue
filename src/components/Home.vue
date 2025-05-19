@@ -1,7 +1,7 @@
 <template>
-    <section class="hero-section">
+    <section class="hero-section" id="home">
         <div class="slideshow">
-            <img :src="currentImage" alt="Bali top destinations" class="hero-image" />
+            <img :src="currentImage" loading="lazy" decoding="async" alt="Bali top destinations" class="hero-image" />
             <div class="overlay">
                 <h1>Let's explore your tour destination with us</h1>
                 <a href="#destinations" class="explore-btn">Explore Now</a>

@@ -15,7 +15,7 @@
             <a href="#about" @click.prevent="handleNavClick('about')">About</a>
         </li>
         <li>
-            <a href="#portofolio" @click.prevent="handleNavClick('portfolio')">Portfolio</a>
+            <a href="#services" @click.prevent="handleNavClick('services')">Our Services</a>
         </li>
         <li style="margin-right: 0 !important;">
             <a href="#contact" @click.prevent="handleNavClick('contact')">Contact</a>
@@ -129,13 +129,13 @@ a {
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  padding: 30px;
+  padding: 20px;
 }
 .scrolled {
   background-color: #57575744;
   box-shadow: 0px 4px 4px #00000040;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 15px;
+  padding: 10px;
 }
 .navbar-content {
   display: flex;
@@ -149,7 +149,7 @@ a {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .tittle-navbar {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-family: "Helvetica-Bold", Helvetica;
   font-weight: 700;
   color: #ffffff;
@@ -171,7 +171,7 @@ a {
   font-family: "Helvetica-Regular", Helvetica;
   font-weight: 400;
   color: #ffffff;
-  font-size: 1.2em;
+  font-size: 1em;
   white-space: nowrap;
   text-decoration: none;
 }

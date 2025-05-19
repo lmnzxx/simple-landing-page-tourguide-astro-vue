@@ -1,5 +1,5 @@
 <template>
-  <section class="info-section">
+  <section class="info-section" id="about">
     <div class="info-top">
       <h2 class="number">8.752</h2>
       <p class="label">TRAVELER SERVED</p>
@@ -42,7 +42,7 @@
 <style scoped>
 .info-section {
   text-align: center;
-  padding: 50px 0px;
+  padding: 50px 0px 0px 0px;
 }
 
 .info-top .number {
@@ -86,7 +86,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 65px;
   padding: 50px 100px;
 }
 
@@ -98,7 +98,6 @@
 }
 
 .feature img {
-  width: 50px;
   height: 50px;
   margin-bottom: 10px;
 }
