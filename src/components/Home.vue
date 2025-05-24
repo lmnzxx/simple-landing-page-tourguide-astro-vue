@@ -58,18 +58,19 @@ onUnmounted(() => {
 
 .overlay {
   position: absolute;
+  max-width: 1200px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
+  text-align: left;
   color: white;
   z-index: 10;
 }
 
 .overlay h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   max-width: 700px;
-  margin: 0 auto 1rem;
+  margin: 0 auto 2rem;
   line-height: 1.3;
 }
 
