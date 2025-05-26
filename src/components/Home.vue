@@ -3,8 +3,10 @@
         <div class="slideshow">
             <img :src="currentImage" loading="lazy" decoding="async" alt="Bali top destinations" class="hero-image" />
             <div class="overlay">
+              <div class="container">
                 <h1>Let's explore your tour destination with us</h1>
                 <a href="#destinations" class="explore-btn">Explore Now</a>
+              </div>
             </div>
         </div>
     </section>
@@ -56,27 +58,33 @@ onUnmounted(() => {
   transition: opacity 1s ease-in-out;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem; /* ini yang bikin tidak terlalu nempel ke kiri */
+  text-align: left;
+}
+
 .overlay {
   position: absolute;
-  max-width: 1200px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: left;
+  left: 0;
+  transform: translate(0, -50%);
+  width: 100%;
   color: white;
   z-index: 10;
 }
 
 .overlay h1 {
-  font-size: 3rem;
+  font-size: 4rem;
   max-width: 700px;
-  margin: 0 auto 2rem;
+  margin: 0 0 2rem;
   line-height: 1.3;
 }
 
 .explore-btn {
   padding: 1rem 2.5rem;
-  background-color: #ffcd82cc;
+  background-color: #ffffffcc;
   color: #000;
   font-weight: bold;
   border-radius: 25px;
