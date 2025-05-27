@@ -1,7 +1,7 @@
 <template>
   <section class="info-section" id="about">
     <div class="info-top">
-      <h2 class="number">8.752</h2>
+      <h2 class="number">{{ travelerServed.toLocaleString() }}</h2>
       <p class="label">TRAVELER SERVED</p>
     </div>
 
@@ -37,6 +37,30 @@
 </template>
 
 <script setup>
+import { ref, onMounted, nextTick } from 'vue';
+
+const travelerServed = ref(0);
+const finalNumber = 8752;
+const duration = 3999;
+
+onMounted(async () => {
+  await nextTick()
+
+  const startTime = performance.now();
+
+  function update(now) {
+    const elapsed = now - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    travelerServed.value = Math.floor(progress * finalNumber)
+
+    if (progress < 1) {
+      requestAnimationFrame(update)
+    } else {
+      travelerServed.value = finalNumber; // Ensure it ends at the final number
+    }
+  }
+  requestAnimationFrame(update);
+});
 </script>
 
 <style scoped>
