@@ -41,7 +41,7 @@ import { ref, onMounted, nextTick } from 'vue';
 
 const travelerServed = ref(0);
 const finalNumber = 8752;
-const duration = 3999;
+const duration = 4000;
 
 onMounted(async () => {
   await nextTick()
