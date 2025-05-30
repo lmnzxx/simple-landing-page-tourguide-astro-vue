@@ -1,21 +1,23 @@
 <template>
   <section class="testimonials" id="testimonials">
-    <h2 class="section-title">What Our Travelers Say</h2>
-    <p class="section-subtitle">Real experiences from happy customers</p>
+    <div class="container-1200">
+      <h2 class="section-title">What Our Travelers Say</h2>
+      <p class="section-subtitle">Real experiences from happy customers</p>
 
-    <div class="carousel-container">
-      <div class="carousel-wrappper">
-        <div class="carousel-gradient left"></div>
-        <div class="carousel-gradient right"></div>
+      <div class="carousel-container">
+        <div class="carousel-wrappper">
+          <div class="carousel-gradient left"></div>
+          <div class="carousel-gradient right"></div>
 
-        <div class="carousel-track">
-          <div class="testimonial-card" v-for="(item, index) in testimonials" :key="index">
-            <p class="quote">"{{ item.message }}"</p>
-            <div class="profile">
-              <img :src="item.image" :alt="item.name" class="avatar" />
-              <div>
-                <p class="name">{{ item.name }}</p>
-                <p class="location">{{ item.location }}</p>
+          <div class="carousel-track" ref="track">
+            <div class="testimonial-card" v-for="(item, index) in testimonials" :key="index">
+              <p class="quote">"{{ item.message }}"</p>
+              <div class="profile">
+                <img :src="item.image" :alt="item.name" class="avatar" />
+                <div>
+                  <p class="name">{{ item.name }}</p>
+                  <p class="location">{{ item.location }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -26,7 +28,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onBeforeUnmount } from 'vue';
 
 const testimonials = [
   {
@@ -68,28 +70,56 @@ const testimonials = [
 ];
 
 const track = ref(null);
+let pos = 0;
+let animationFrame;
+let isPaused = false;
+
+const scrollSpeed = 0.5;
+
+function animateScroll() {
+  if (!isPaused && track.value) {
+    pos += scrollSpeed;
+    track.value.scrollLeft = pos;
+
+    if (pos >= track.value.scrollWidth / 2) {
+      pos = 0;
+      track.value.scrollLeft = 0;
+    }
+  }
+  animationFrame = requestAnimationFrame(animateScroll);
+}
+
+function pauseScroll() {
+  isPaused = true;
+}
+
+function resumeScroll() {
+  isPaused = false;
+}
 
 onMounted(() => {
-  const scrollSpeed = 0.5;
-  let pos = 0;
-
-  function animate() {
-    if (track.value) {
-      pos += scrollSpeed;
-      track.value.scrollLeft = pos;
-
-      if (pos >= track.value.scrollWidth / 2) {
-        pos = 0; 
-        track.value.scrollLeft = 0;
-      }
-    }
-    requestAnimationFrame(animate);
+  if (track.value) {
+    track.value.addEventListener('mouseenter', pauseScroll);
+    track.value.addEventListener('mouseleave', resumeScroll);
   }
-  requestAnimationFrame(animate);
+  animationFrame = requestAnimationFrame(animateScroll);
+})
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(animationFrame);
+  if (track.value) {
+    track.value.removeEventListener('mouseenter', pauseScroll);
+    track.value.removeEventListener('mouseleave', resumeScroll);
+  }
 })
 </script>
 
 <style scoped>
+.container-1200 {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .testimonials {
   padding: 60px 20px;
   background-color: #f9f9f9;
@@ -119,9 +149,7 @@ onMounted(() => {
 }
 
 .carousel-container {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
 .carousel-wrappper {
