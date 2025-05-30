@@ -52,6 +52,7 @@ const testimonials = [
   font-size: 2.5em;
   color: #ff7b01;
   margin-bottom: 10px;
+  margin-top: 0;
 }
 
 .section-subtitle {
