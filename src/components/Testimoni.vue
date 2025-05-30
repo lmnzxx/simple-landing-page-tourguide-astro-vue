@@ -3,14 +3,21 @@
     <h2 class="section-title">What Our Travelers Say</h2>
     <p class="section-subtitle">Real experiences from happy customers</p>
 
-    <div class="container">
-      <div class="testimonial-card" v-for="(item, index) in testimonials" :key="index">
-        <p class="quote">"{{ item.message }}"</p>
-        <div class="profile">
-          <img :src="item.image" :alt="item.name" class="avatar" />
-          <div>
-            <p class="name">{{ item.name }}</p>
-            <p class="location">{{ item.location }}</p>
+    <div class="carousel-container">
+      <div class="carousel-wrappper">
+        <div class="carousel-gradient left"></div>
+        <div class="carousel-gradient right"></div>
+
+        <div class="carousel-track">
+          <div class="testimonial-card" v-for="(item, index) in testimonials" :key="index">
+            <p class="quote">"{{ item.message }}"</p>
+            <div class="profile">
+              <img :src="item.image" :alt="item.name" class="avatar" />
+              <div>
+                <p class="name">{{ item.name }}</p>
+                <p class="location">{{ item.location }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -19,6 +26,8 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+
 const testimonials = [
   {
     name: "Jessica W.",
@@ -37,8 +46,47 @@ const testimonials = [
     location: "Paris, France",
     message: "Bali is magical and this tour made it even more special. Thank you for the amazing journey!",
     image: "/images/profile.jpg"
+  },
+    {
+    name: "Jessica W.",
+    location: "California, USA",
+    message: "It was an unforgettable experience! The guide was super friendly and informative. Highly recommended.",
+    image: "/images/profile.jpg"
+  },
+  {
+    name: "Aditya K.",
+    location: "Jakarta, Indonesia",
+    message: "Pelayanan sangat ramah dan profesional. Semua tour-nya bisa dikustom! Suka banget!",
+    image: "/images/profile.jpg"
+  },
+  {
+    name: "Marie C.",
+    location: "Paris, France",
+    message: "Bali is magical and this tour made it even more special. Thank you for the amazing journey!",
+    image: "/images/profile.jpg"
   }
-]
+];
+
+const track = ref(null);
+
+onMounted(() => {
+  const scrollSpeed = 0.5;
+  let pos = 0;
+
+  function animate() {
+    if (track.value) {
+      pos += scrollSpeed;
+      track.value.scrollLeft = pos;
+
+      if (pos >= track.value.scrollWidth / 2) {
+        pos = 0; 
+        track.value.scrollLeft = 0;
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+})
 </script>
 
 <style scoped>
@@ -46,6 +94,8 @@ const testimonials = [
   padding: 60px 20px;
   background-color: #f9f9f9;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .section-title {
@@ -68,7 +118,35 @@ const testimonials = [
   gap: 30px;
 }
 
+.carousel-container {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-wrappper {
+  position: relative;
+  overflow: hidden;;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
 .testimonial-card {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
   background-color: #fff;
   max-width: 300px;
   padding: 25px 20px;
@@ -80,6 +158,7 @@ const testimonials = [
 
 .testimonial-card:hover {
   transform: translateY(-5px);
+  transition: transform 0.3s ease;
 }
 
 .quote {
@@ -109,6 +188,25 @@ const testimonials = [
 .location {
   font-size: 0.9em;
   color: #999;
+}
+
+.carousel-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 480px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.carousel-gradient.left {
+  left: 0;
+  background: linear-gradient(to right, #f9f9f9, rgba(249, 249, 249, 0));
+}
+
+.carousel-gradient.right {
+  right: 0;
+  background: linear-gradient(to left, #f9f9f9, rgba(249, 249, 249, 0));
 }
 
 @media (max-width: 768px) {
