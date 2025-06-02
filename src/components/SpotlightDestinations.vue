@@ -118,4 +118,36 @@ const destinations = [
   z-index: 1;
   padding: 0 1rem;
 }
+
+@media (max-width: 768px) {
+  .text-center h2 {
+    font-size: 1.2rem;
+  }
+
+  .text-center p {
+    font-size: 0.9rem;
+  }
+
+  .destination-card span {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-center h2 {
+    font-size: 1rem;
+  }
+
+  .text-center p {
+    font-size: 0.8rem;
+  }
+
+  .text-center span {
+    width: 360px;
+  }
+
+  .destination-card span {
+    font-size: 0.9rem;
+  }
+}
 </style>

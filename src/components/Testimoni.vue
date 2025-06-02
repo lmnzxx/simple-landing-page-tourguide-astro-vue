@@ -243,4 +243,13 @@ onBeforeUnmount(() => {
     align-items: center;
   }
 }
+
+@media (max-width: 480px) {
+  .testimonial-card {
+    max-width: 100%;
+  }
+  .carousel-gradient {
+    display: none;
+  }
+}
 </style>
