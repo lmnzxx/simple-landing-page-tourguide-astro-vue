@@ -288,9 +288,13 @@ a {
 @media (max-width: 480px) {
   .tittle-navbar {
     font-size: 1.2em;
+    color : #000;
   }
   .navigation-list {
     width: 69%;
+  }
+  .navigation-list li a {
+    color: #000 !important;
   }
 }
 </style>

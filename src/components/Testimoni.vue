@@ -8,9 +8,8 @@
         <div class="carousel-wrappper">
           <div class="carousel-gradient left"></div>
           <div class="carousel-gradient right"></div>
-
           <div class="carousel-track" ref="track">
-            <div class="testimonial-card" v-for="(item, index) in testimonials" :key="index">
+            <div class="testimonial-card" v-for="(item, index) in duplicatedTestimonials" :key="index">
               <p class="quote">"{{ item.message }}"</p>
               <div class="profile">
                 <img :src="item.image" :alt="item.name" class="avatar" />
@@ -28,7 +27,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onBeforeUnmount } from 'vue';
+import { onMounted, ref, onBeforeUnmount, computed } from 'vue';
 
 const testimonials = [
   {
@@ -49,69 +48,55 @@ const testimonials = [
     message: "Bali is magical and this tour made it even more special. Thank you for the amazing journey!",
     image: "/images/profile.jpg"
   },
-    {
-    name: "Jessica W.",
-    location: "California, USA",
-    message: "It was an unforgettable experience! The guide was super friendly and informative. Highly recommended.",
-    image: "/images/profile.jpg"
-  },
-  {
-    name: "Aditya K.",
-    location: "Jakarta, Indonesia",
-    message: "Pelayanan sangat ramah dan profesional. Semua tour-nya bisa dikustom! Suka banget!",
-    image: "/images/profile.jpg"
-  },
-  {
-    name: "Marie C.",
-    location: "Paris, France",
-    message: "Bali is magical and this tour made it even more special. Thank you for the amazing journey!",
-    image: "/images/profile.jpg"
-  }
 ];
 
-const track = ref(null);
-let pos = 0;
-let animationFrame;
-let isPaused = false;
+const duplicatedTestimonials = computed(() => testimonials.concat(testimonials, testimonials));
 
-const scrollSpeed = 0.5;
+const track = ref(null);
+let animationFrame;
+let scrollSpeed = 0.5;
 
 function animateScroll() {
-  if (!isPaused && track.value) {
-    pos += scrollSpeed;
-    track.value.scrollLeft = pos;
+  const el = track.value;
+  if (!el) return;
 
-    if (pos >= track.value.scrollWidth / 2) {
-      pos = 0;
-      track.value.scrollLeft = 0;
-    }
+  el.scrollLeft += scrollSpeed;
+
+  const maxScroll = el.scrollWidth;
+  const halfScroll = maxScroll / 3;
+
+  if (el.scrollLeft <= 0) {
+    el.scrollLeft = halfScroll;
+  } else if (el.scrollLeft >= maxScroll - el.clientWidth) {
+    el.scrollLeft = halfScroll;
   }
   animationFrame = requestAnimationFrame(animateScroll);
-}
-
-function pauseScroll() {
-  isPaused = true;
-}
-
-function resumeScroll() {
-  isPaused = false;
 }
 
 onMounted(() => {
-  if (track.value) {
-    track.value.addEventListener('mouseenter', pauseScroll);
-    track.value.addEventListener('mouseleave', resumeScroll);
+  const el = track.value;
+  if (el) {
+    const halfScroll = el.scrollWidth / 3;
+    el.scrollLeft = halfScroll;
+
+    el.addEventListener('scroll', () => {
+      const maxScroll = el.scrollWidth;
+      const halfScroll = maxScroll / 3;
+
+      if (el.scrollLeft <= 0) {
+        el.scrollLeft = halfScroll;
+      } else if (el.scrollLeft >= maxScroll - el.clientWidth) {
+        el.scrollLeft = halfScroll;
+      }
+    });
+
+    animationFrame = requestAnimationFrame(animateScroll);
   }
-  animationFrame = requestAnimationFrame(animateScroll);
-})
+});
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(animationFrame);
-  if (track.value) {
-    track.value.removeEventListener('mouseenter', pauseScroll);
-    track.value.removeEventListener('mouseleave', resumeScroll);
-  }
-})
+});
 </script>
 
 <style scoped>
@@ -159,10 +144,10 @@ onBeforeUnmount(() => {
 
 .carousel-track {
   display: flex;
+  flex-wrap: nowrap;
   gap: 20px;
   padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -245,8 +230,17 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 480px) {
+  .testimonials {
+    padding: 80px 0px;
+  }
   .testimonial-card {
-    max-width: 100%;
+    max-width: 240px;
+  }
+  .section-title {
+    font-size: 1.8em;
+  }
+  .section-subtitle {
+    font-size: 1em;
   }
   .carousel-gradient {
     display: none;
